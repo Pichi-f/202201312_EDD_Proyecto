@@ -1,7 +1,9 @@
 #include <iostream>
 #include <string>
+#include "json.hpp"
 
 using namespace std;
+using json = nlohmann::json;
 
 void menuPrincipal(){
     cout << "Menu Principal" << endl;
