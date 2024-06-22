@@ -1,0 +1,122 @@
+[
+    {
+        "nombre": "John Doe",
+        "nacionalidad": "Estados Unidos",
+        "numero_de_id": "P12345678",
+        "vuelo": "A100",
+        "horas_de_vuelo": 600,
+        "tipo_de_licencia": "PPL"
+    },
+    {
+        "nombre": "Jane Smith",
+        "nacionalidad": "Reino Unido",
+        "numero_de_id": "P98765432",
+        "vuelo": "A200",
+        "horas_de_vuelo": 99,
+        "tipo_de_licencia": "CPL"
+    },
+    {
+        "nombre": "Carlos Lopez",
+        "nacionalidad": "México",
+        "numero_de_id": "P23456789",
+        "vuelo": "A300",
+        "horas_de_vuelo": 150,
+        "tipo_de_licencia": "PPL"
+    },
+    {
+        "nombre": "Anna Müller",
+        "nacionalidad": "Alemania",
+        "numero_de_id": "P34567890",
+        "vuelo": "A400",
+        "horas_de_vuelo": 800,
+        "tipo_de_licencia": "ATPL"
+    },
+    {
+        "nombre": "David Chen",
+        "nacionalidad": "China",
+        "numero_de_id": "P45678901",
+        "vuelo": "A500",
+        "horas_de_vuelo": 300,
+        "tipo_de_licencia": "CPL"
+    },
+    {
+        "nombre": "Emily Johnson",
+        "nacionalidad": "Australia",
+        "numero_de_id": "P56789012",
+        "vuelo": "A600",
+        "horas_de_vuelo": 1200,
+        "tipo_de_licencia": "ATPL"
+    },
+    {
+        "nombre": "Miguel Santos",
+        "nacionalidad": "Brasil",
+        "numero_de_id": "P67890123",
+        "vuelo": "A700",
+        "horas_de_vuelo": 450,
+        "tipo_de_licencia": "PPL"
+    },
+    {
+        "nombre": "Sofia Rossi",
+        "nacionalidad": "Italia",
+        "numero_de_id": "P78901234",
+        "vuelo": "A800",
+        "horas_de_vuelo": 250,
+        "tipo_de_licencia": "CPL"
+    },
+    {
+        "nombre": "Yuki Tanaka",
+        "nacionalidad": "Japón",
+        "numero_de_id": "P89012345",
+        "vuelo": "A900",
+        "horas_de_vuelo": 400,
+        "tipo_de_licencia": "PPL"
+    },
+    {
+        "nombre": "Liam O'Connor",
+        "nacionalidad": "Irlanda",
+        "numero_de_id": "P90123456",
+        "vuelo": "A1000",
+        "horas_de_vuelo": 700,
+        "tipo_de_licencia": "ATPL"
+    },
+    {
+        "nombre": "Amina Ahmed",
+        "nacionalidad": "Egipto",
+        "numero_de_id": "P01234567",
+        "vuelo": "A1100",
+        "horas_de_vuelo": 350,
+        "tipo_de_licencia": "CPL"
+    },
+    {
+        "nombre": "Lucas Martinez",
+        "nacionalidad": "Argentina",
+        "numero_de_id": "P23456780",
+        "vuelo": "A1200",
+        "horas_de_vuelo": 500,
+        "tipo_de_licencia": "PPL"
+    },
+    {
+        "nombre": "Aisha Khan",
+        "nacionalidad": "Pakistán",
+        "numero_de_id": "P34567891",
+        "vuelo": "A1300",
+        "horas_de_vuelo": 800,
+        "tipo_de_licencia": "ATPL"
+    },
+    {
+        "nombre": "Oliver Smith",
+        "nacionalidad": "Canadá",
+        "numero_de_id": "P45678902",
+        "vuelo": "A1400",
+        "horas_de_vuelo": 600,
+        "tipo_de_licencia": "CPL"
+    },
+    {
+        "nombre": "Mia Santos",
+        "nacionalidad": "España",
+        "numero_de_id": "P56789023",
+        "vuelo": "A1500",
+        "horas_de_vuelo": 450,
+        "tipo_de_licencia": "PPL"
+    }
+]

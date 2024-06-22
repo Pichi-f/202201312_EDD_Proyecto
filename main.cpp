@@ -1,6 +1,12 @@
 #include <iostream>
 #include <string>
 #include "json.hpp"
+#include <fstream>
+#include "pilotosABB.h"
+#include "listaCircularAviones.h"
+
+listaCircularAviones *aviones = new listaCircularAviones();
+pilotosABB *pilotos = new pilotosABB();
 
 using namespace std;
 using json = nlohmann::json;
@@ -15,6 +21,28 @@ void menuPrincipal(){
     cout << "6. Recomendar ruta" << endl;
     cout << "7. Visualizar reportes" << endl;
     cout << "8. Salir" << endl;   
+}
+
+void cargarPilotos(){
+    ifstream archivo("pilotos.json");
+
+    if (!archivo.is_open()){
+        cout << "No se pudo abrir el archivo" << endl;
+        return;
+    }
+    json j;
+    archivo >> j;
+
+    for (const auto & item : j){
+        string nombre = item["nombre"];
+        string nacionalidad = item["nacionalidad"];
+        string numero_de_id = item["numero_de_id"];
+        string vuelo = item["vuelo"];
+        int horas_de_vuelo = item["horas_de_vuelo"];
+        string tipo_de_licencia = item["tipo_de_licencia"];
+
+        pilotos->insertar(nombre, nacionalidad, numero_de_id, vuelo, horas_de_vuelo, tipo_de_licencia);
+    }
 }
 
 void menuReomendarRuta(){
@@ -37,6 +65,7 @@ int main(){
                 break;
             case 2:
                 cout << "Carga de pilotos" << endl;
+                cargarPilotos();
                 break;
             case 3:
                 cout << "Carga de rutas" << endl;
@@ -77,6 +106,7 @@ int main(){
                 break;
             case 7:
                 cout << "Visualizar reportes" << endl;
+                pilotos->generarReporte();
                 break;
             case 8:
                 cout << "Saliendo..." << endl;

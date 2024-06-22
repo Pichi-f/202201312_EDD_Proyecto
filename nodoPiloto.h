@@ -31,6 +31,7 @@ nodoPiloto::nodoPiloto(string nombre, string nacionalidad, string numero_de_id, 
     this->izquierdo = nullptr;
 }
 
+
 nodoPiloto::~nodoPiloto(){
 }
 
