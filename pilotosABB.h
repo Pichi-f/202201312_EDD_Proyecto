@@ -19,6 +19,7 @@ class pilotosABB{
         void imprimirNodo(nodoPiloto* nodoPtr);
         void preOrden(nodoPiloto *);
         void inOrden(nodoPiloto *);
+        void postOrden(nodoPiloto *);
         virtual ~pilotosABB();
 };
 
@@ -73,6 +74,16 @@ void pilotosABB::inOrden(nodoPiloto *nodoPtr){
     inOrden(nodoPtr->izquierdo);
     cout << nodoPtr->horas_de_vuelo << " - ";
     inOrden(nodoPtr->derecho);
+}
+
+void pilotosABB::postOrden(nodoPiloto *nodoPtr){
+    if (nodoPtr == nullptr)
+    {
+        return;
+    }
+    postOrden(nodoPtr->izquierdo);
+    postOrden(nodoPtr->derecho);
+    cout << nodoPtr->horas_de_vuelo << " - ";
 }
 
 void pilotosABB::generarReporte(){

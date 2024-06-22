@@ -96,6 +96,8 @@ int main(){
                         break;
                     case 3:
                         cout << "Postorden" << endl;
+                        pilotos->postOrden(pilotos->raiz);
+                        cout << endl;
                         break;
                     case 4:
                         cout << "Saliendo..." << endl;
