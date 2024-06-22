@@ -46,11 +46,12 @@ void cargarPilotos(){
 }
 
 void menuReomendarRuta(){
-        cout << "Seleccione el recorrido" << endl;
-        cout << "1. Preorden" << endl;
-        cout << "2. Inorden" << endl;
-        cout << "3. Postorden" << endl;
-        cout << "4. Salir" << endl;
+    cout << "" << endl;
+    cout << "Seleccione el recorrido" << endl;
+    cout << "1. Preorden" << endl;
+    cout << "2. Inorden" << endl;
+    cout << "3. Postorden" << endl;
+    cout << "4. Salir" << endl;
 }
 
 int main(){
@@ -75,9 +76,6 @@ int main(){
                 break;
             case 5:
                 cout << "Consulta de horas de vuelo (Pilotos)" << endl;
-                break;
-            case 6:
-                cout << "Recomendar ruta" << endl;
                 int opcionRecomendar;
                 do
                 {
@@ -88,6 +86,8 @@ int main(){
                     {
                     case 1:
                         cout << "Preorden" << endl;
+                        pilotos->preOrden(pilotos->raiz);
+                        cout << endl;
                         break;
                     case 2:
                         cout << "Inorden" << endl;
@@ -103,6 +103,9 @@ int main(){
                         break;
                     }
                 } while (opcionRecomendar != 4);
+                break;
+            case 6:
+                cout << "Recomendar ruta" << endl;
                 break;
             case 7:
                 cout << "Visualizar reportes" << endl;

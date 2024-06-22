@@ -15,11 +15,9 @@ class pilotosABB{
         bool esVacio();
         void insertar(string nombre, string nacionalidad, string numero_de_id, string vuelo, int horas_de_vuelo, string tipo_de_licencia);
         nodoPiloto* insertarNodo(string nombre, string nacionalidad, string numero_de_id, string vuelo, int horas_de_vuelo, string tipo_de_licencia, nodoPiloto *nodoPtr);
-        void mostrar(nodoPiloto *nodo, int nivel);
-        void mostrarArbol();
-
         void generarReporte();
         void imprimirNodo(nodoPiloto* nodoPtr);
+        void preOrden(nodoPiloto *);
         virtual ~pilotosABB();
 };
 
@@ -56,6 +54,16 @@ pilotosABB::~pilotosABB()
 {
 }
 
+void pilotosABB::preOrden(nodoPiloto *nodoPtr){
+    if (nodoPtr == nullptr)
+    {
+        return;
+    }
+    cout << nodoPtr->horas_de_vuelo << " - ";
+    preOrden(nodoPtr->izquierdo);
+    preOrden(nodoPtr->derecho);
+}
+
 void pilotosABB::generarReporte(){
     if (pilotosABB::esVacio()){}
     else{
@@ -63,7 +71,7 @@ void pilotosABB::generarReporte(){
         archivo << "digraph G {" << endl;
 
         imprimirNodo(raiz);
-        
+
         archivo << "}" << endl;
         archivo.close();
         system("dot -Tpng pilotos.dot -o pilotos.png");
