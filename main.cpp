@@ -91,6 +91,8 @@ int main(){
                         break;
                     case 2:
                         cout << "Inorden" << endl;
+                        pilotos->inOrden(pilotos->raiz);
+                        cout << endl;
                         break;
                     case 3:
                         cout << "Postorden" << endl;
