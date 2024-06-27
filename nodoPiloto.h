@@ -16,6 +16,8 @@ class nodoPiloto{
         std::string tipo_de_licencia;
         nodoPiloto *derecho;
         nodoPiloto *izquierdo;
+        nodoPiloto *anterior;
+        nodoPiloto *siguiente;
         nodoPiloto(std::string nombre, std::string nacionalidad, std::string numero_de_id, std::string vuelo, int horas_de_vuelo, std::string tipo_de_licencia);
         virtual ~nodoPiloto();
 };
@@ -29,8 +31,9 @@ nodoPiloto::nodoPiloto(string nombre, string nacionalidad, string numero_de_id, 
     this->tipo_de_licencia = tipo_de_licencia;
     this->derecho = nullptr;
     this->izquierdo = nullptr;
+    this->anterior = nullptr;
+    this->siguiente = nullptr;
 }
-
 
 nodoPiloto::~nodoPiloto(){
 }

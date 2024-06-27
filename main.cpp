@@ -4,9 +4,11 @@
 #include <fstream>
 #include "pilotosABB.h"
 #include "listaCircularAviones.h"
+#include "tablaHash.h"
 
 listaCircularAviones *aviones = new listaCircularAviones();
 pilotosABB *pilotos = new pilotosABB();
+tablaHash *tabla = new tablaHash();
 
 using namespace std;
 using json = nlohmann::json;
@@ -42,6 +44,29 @@ void cargarPilotos(){
         string tipo_de_licencia = item["tipo_de_licencia"];
 
         pilotos->insertar(nombre, nacionalidad, numero_de_id, vuelo, horas_de_vuelo, tipo_de_licencia);
+        tabla->insertar(nombre, nacionalidad, numero_de_id, vuelo, horas_de_vuelo, tipo_de_licencia);
+    }
+}
+
+void cargarAviones() {
+    ifstream archivo("aviones.json");
+    if (!archivo.is_open()) {
+        cout << "No se pudo abrir el archivo" << endl;
+        return;
+    }
+    json j;
+    archivo >> j;
+
+    for (const auto& item : j) {
+        string vuelo = item["vuelo"];
+        string numero_de_registro = item["numero_de_registro"];
+        string modelo = item["modelo"];
+        int capacidad = item["capacidad"];
+        string aerolinea = item["aerolinea"];
+        string ciudad_destino = item["ciudad_destino"];
+        string estado = item["estado"];
+
+        nodoAviones* avion = new nodoAviones(vuelo, numero_de_registro, modelo, capacidad, aerolinea, ciudad_destino, estado);
     }
 }
 
@@ -63,6 +88,7 @@ int main(){
         switch(opcion){
             case 1:
                 cout << "Carga de aviones" << endl;
+                cargarAviones();
                 break;
             case 2:
                 cout << "Carga de pilotos" << endl;
@@ -113,7 +139,9 @@ int main(){
                 break;
             case 7:
                 cout << "Visualizar reportes" << endl;
-                pilotos->generarReporte();
+                //pilotos->generarReporte();
+                tabla->imprimirTabla();
+                tabla->generarGraphviz();
                 break;
             case 8:
                 cout << "Saliendo..." << endl;

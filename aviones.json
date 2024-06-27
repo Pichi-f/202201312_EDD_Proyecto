@@ -1,0 +1,92 @@
+[
+    {
+        "vuelo": "A100",
+        "numero_de_registro": "N12345",
+        "modelo": "Boeing 737",
+        "capacidad": 180,
+        "aerolinea": "Airlinex",
+        "ciudad_destino": "Madrid",
+        "estado": "Disponible"
+    },
+    {
+        "vuelo": "A102",
+        "numero_de_registro": "N54321",
+        "modelo": "Airbus A320",
+        "capacidad": 150,
+        "aerolinea": "Airliney",
+        "ciudad_destino": "Zaragoza",
+        "estado": "Disponible"
+    },
+    {
+        "vuelo": "A103",
+        "numero_de_registro": "N67890",
+        "modelo": "Boeing 747",
+        "capacidad": 400,
+        "aerolinea": "Airlinex",
+        "ciudad_destino": "Barcelona",
+        "estado": "En mantenimiento"
+    },
+    {
+        "vuelo": "A104",
+        "numero_de_registro": "N09876",
+        "modelo": "Airbus A380",
+        "capacidad": 500,
+        "aerolinea": "Airliney",
+        "ciudad_destino": "Sevilla",
+        "estado": "Disponible"
+    },
+    {
+        "vuelo": "A105",
+        "numero_de_registro": "N11223",
+        "modelo": "Boeing 777",
+        "capacidad": 300,
+        "aerolinea": "Airlinex",
+        "ciudad_destino": "Valencia",
+        "estado": "Disponible"
+    },
+    {
+        "vuelo": "A106",
+        "numero_de_registro": "N44556",
+        "modelo": "Airbus A330",
+        "capacidad": 250,
+        "aerolinea": "Airliney",
+        "ciudad_destino": "Bilbao",
+        "estado": "En mantenimiento"
+    },
+    {
+        "vuelo": "A107",
+        "numero_de_registro": "N77889",
+        "modelo": "Boeing 787",
+        "capacidad": 280,
+        "aerolinea": "Airlinex",
+        "ciudad_destino": "Granada",
+        "estado": "Disponible"
+    },
+    {
+        "vuelo": "A108",
+        "numero_de_registro": "N99001",
+        "modelo": "Airbus A350",
+        "capacidad": 320,
+        "aerolinea": "Airliney",
+        "ciudad_destino": "Murcia",
+        "estado": "Disponible"
+    },
+    {
+        "vuelo": "A109",
+        "numero_de_registro": "N22334",
+        "modelo": "Boeing 767",
+        "capacidad": 210,
+        "aerolinea": "Airlinex",
+        "ciudad_destino": "Alicante",
+        "estado": "En mantenimiento"
+    },
+    {
+        "vuelo": "A110",
+        "numero_de_registro": "N55667",
+        "modelo": "Airbus A340",
+        "capacidad": 260,
+        "aerolinea": "Airliney",
+        "ciudad_destino": "Santander",
+        "estado": "Disponible"
+    }
+]
