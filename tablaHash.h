@@ -61,25 +61,36 @@ void tablaHash::generarGraphviz() {
     std::ofstream archivo("tablaHash.dot");
     archivo << "digraph G {" << std::endl;
     archivo << "node [shape=record];" << std::endl;
-    archivo << "rankdir=LR;" << std::endl; // Opcional: hace que el gráfico sea horizontal
+    archivo << "rankdir=LR;" << std::endl;
 
-    for (int i = 0; i < tamTabla; i++) {
+    // Imprimir todas las claves en orden descendente
+    for (int i = tamTabla - 1; i >= 0; i--) {
+        archivo << "subgraph cluster_" << i << " {" << std::endl;
+        archivo << "style=filled;" << std::endl;
+        archivo << "color=lightgrey;" << std::endl;
+
+        // Nodo para la clave (sin datos)
+        archivo << "nodoClave" << i << " [label=\"" << i << "\"];" << std::endl; 
+
+        // Si la lista no está vacía, imprimir los datos a la derecha
         if (!tabla[i].estaVacia()) {
-            nodoPiloto *actual = tabla[i].primero;
-            archivo << "subgraph cluster_" << i << " {" << std::endl;
-            archivo << "label = \"[" << i << "]\";" << std::endl;
-            std::string prevNode;
+            nodoPiloto* actual = tabla[i].primero;
+            std::string nodoAnterior = "nodoClave" + std::to_string(i);
+            int contador = 0;
             while (actual != nullptr) {
-                std::string nodeName = "node" + actual->numero_de_id; // Usar numero_de_id como identificador único
-                archivo << nodeName << " [label=\"" << actual->numero_de_id << "\"];" << std::endl;
-                if (!prevNode.empty()) {
-                    archivo << prevNode << " -> " << nodeName << ";" << std::endl;
-                }
-                prevNode = nodeName;
+                std::string nombreNodoActual = "nodoDatos" + std::to_string(i) + "_" + std::to_string(contador);
+                archivo << nombreNodoActual << " [label=\"" << actual->numero_de_id << "\", shape=record, style=filled, color=white];" << std::endl;
+                
+                // Conectar el nodo anterior con el actual
+                archivo << nodoAnterior << " -> " << nombreNodoActual << ";" << std::endl;
+                
+                nodoAnterior = nombreNodoActual;
                 actual = actual->siguiente;
+                contador++;
             }
-            archivo << "}" << std::endl;
         }
+
+        archivo << "}" << std::endl;
     }
 
     archivo << "}" << std::endl;
