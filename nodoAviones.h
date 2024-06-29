@@ -17,6 +17,7 @@ class nodoAviones{
         std::string estado;
         nodoAviones *siguiente;
         nodoAviones *anterior;
+        nodoAviones();
         nodoAviones(std::string vuelo, std::string numero_de_registro, std::string modelo, int capacidad, std::string aerolinea, std::string ciudad_destino, std::string estado);
         virtual ~nodoAviones();
 };
@@ -31,6 +32,9 @@ nodoAviones::nodoAviones(string vuelo, string numero_de_registro, string modelo,
     this->estado = estado;
     this->siguiente = nullptr;
     this->anterior = nullptr;
+}
+
+nodoAviones::nodoAviones(){
 }
 
 nodoAviones::~nodoAviones(){

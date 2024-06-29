@@ -5,10 +5,12 @@
 #include "pilotosABB.h"
 #include "listaCircularAviones.h"
 #include "tablaHash.h"
+#include "ArbolB.h"
 
 listaCircularAviones *aviones = new listaCircularAviones();
 pilotosABB *pilotos = new pilotosABB();
 tablaHash *tabla = new tablaHash();
+ArbolB *arbol = new ArbolB(5);
 
 using namespace std;
 using json = nlohmann::json;
@@ -66,7 +68,12 @@ void cargarAviones() {
         string ciudad_destino = item["ciudad_destino"];
         string estado = item["estado"];
 
-        nodoAviones* avion = new nodoAviones(vuelo, numero_de_registro, modelo, capacidad, aerolinea, ciudad_destino, estado);
+        if (estado == "Mantenimiento" || estado == "mantenimiento") {
+            aviones->insertar(vuelo, numero_de_registro, modelo, capacidad, aerolinea, ciudad_destino, estado);
+        }
+        else {
+            arbol->insertar(nodoAviones(vuelo, numero_de_registro, modelo, capacidad, aerolinea, ciudad_destino, estado));
+        }
     }
 }
 
@@ -139,9 +146,10 @@ int main(){
                 break;
             case 7:
                 cout << "Visualizar reportes" << endl;
-                //pilotos->generarReporte();
+                pilotos->generarReporte();
                 tabla->imprimirTabla();
                 tabla->generarGraphviz();
+                arbol->graficar("arbol");
                 break;
             case 8:
                 cout << "Saliendo..." << endl;

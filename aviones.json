@@ -24,7 +24,7 @@
         "capacidad": 400,
         "aerolinea": "Airlinex",
         "ciudad_destino": "Barcelona",
-        "estado": "En mantenimiento"
+        "estado": "Mantenimiento"
     },
     {
         "vuelo": "A104",
@@ -51,7 +51,7 @@
         "capacidad": 250,
         "aerolinea": "Airliney",
         "ciudad_destino": "Bilbao",
-        "estado": "En mantenimiento"
+        "estado": "Mantenimiento"
     },
     {
         "vuelo": "A107",
@@ -78,7 +78,7 @@
         "capacidad": 210,
         "aerolinea": "Airlinex",
         "ciudad_destino": "Alicante",
-        "estado": "En mantenimiento"
+        "estado": "Mantenimiento"
     },
     {
         "vuelo": "A110",
