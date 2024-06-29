@@ -146,6 +146,7 @@ int main(){
                 break;
             case 7:
                 cout << "Visualizar reportes" << endl;
+                aviones->graficar("aviones");
                 pilotos->generarReporte();
                 tabla->imprimirTabla();
                 tabla->generarGraphviz();
