@@ -14,30 +14,30 @@ class ArbolB {
         NodoB* raiz;
         int m;
         ArbolB(int m);
-        void insertarNodoLleno(NodoB* nodo, const nodoAviones& nuevoAvion);
-        void destruirNodo(NodoB* nodo);
-        void graficarNodo(stringstream& ss, NodoB* nodo, int& nullCount);
-        void imprimirClavesOrdenadas(NodoB* nodo);
+        void destroyNodo(NodoB* nodo);
         void insertar(const nodoAviones& nuevoAvion);
+        void insertarNodo(NodoB* nodo, const nodoAviones& nuevoAvion);
         void eliminar(const string& numero_de_registro);
+        void graficarNodos(stringstream& var, NodoB* nodo, int& contadorNulo);
+        void imprimirClaves(NodoB* nodo);
         void graficar(const string& nombreArchivo);
-        void imprimirClavesOrdenadas();
-        void ejecutarComandos(const string& comando);
-        string obtenerDot();
+        void imprimirClaves();
+        void ejecutar(const string& comando);
+        string generarDot();
         virtual ~ArbolB();
 };
 
 ArbolB::ArbolB(int m) : raiz(new NodoB(m)), m(m) {}
 
 ArbolB::~ArbolB() {
-    destruirNodo(raiz);
+    destroyNodo(raiz);
 }
 
-void ArbolB::destruirNodo(NodoB* nodo) {
+void ArbolB::destroyNodo(NodoB* nodo) {
     if (nodo) {
         if (!nodo->esHoja()) {
             for (int i = 0; i <= nodo->clavesUsadas; ++i) {
-                destruirNodo(nodo->puntero[i]);
+                destroyNodo(nodo->punteros[i]);
             }
         }
         delete nodo;
@@ -45,34 +45,35 @@ void ArbolB::destruirNodo(NodoB* nodo) {
 }
 
 void ArbolB::insertar(const nodoAviones& nuevoAvion) {
-    if (raiz->estaLleno()) {
-        NodoB* nuevaRaiz = new NodoB(m);
-        nuevaRaiz->hoja = false;
-        nuevaRaiz->puntero[0] = raiz;
+    if (raiz->lleno()) {
+        NodoB* nueva = new NodoB(m);
+        nueva->hoja = false;
+        nueva->punteros[0] = raiz;
         nodoAviones mediana;
         NodoB* nuevoNodo = raiz->dividirNodo(mediana);
-        nuevaRaiz->clave[0] = mediana;
-        nuevaRaiz->puntero[1] = nuevoNodo;
-        nuevaRaiz->clavesUsadas = 1;
-        raiz = nuevaRaiz;
+        nueva->claves[0] = mediana;
+        nueva->punteros[1] = nuevoNodo;
+        nueva->clavesUsadas = 1;
+        raiz = nueva;
     }
-    insertarNodoLleno(raiz, nuevoAvion);
+    insertarNodo(raiz, nuevoAvion);
 }
 
-void ArbolB::insertarNodoLleno(NodoB* nodo, const nodoAviones& nuevoAvion) {
+void ArbolB::insertarNodo(NodoB* nodo, const nodoAviones& nuevoAvion) {
     if (nodo->esHoja()) {
         nodo->insertarClave(nuevoAvion);
     } else {
-        int i = nodo->encontrarPosicionInsertar(nuevoAvion.numero_de_registro);
-        if (nodo->puntero[i]->estaLleno()) {
+        int i = nodo->posicionInsertar(nuevoAvion.numero_de_registro);
+        if (nodo->punteros[i]->lleno()) {
             nodoAviones mediana;
-            NodoB* nuevoNodo = nodo->puntero[i]->dividirNodo(mediana);
+            NodoB* nuevoNodo = nodo->punteros[i]->dividirNodo(mediana);
             nodo->insertarClave(mediana);
+            nodo->punteros[i + 1] = nuevoNodo;
             if (nuevoAvion.numero_de_registro > mediana.numero_de_registro) {
                 i++;
             }
         }
-        insertarNodoLleno(nodo->puntero[i], nuevoAvion);
+        insertarNodo(nodo->punteros[i], nuevoAvion);
     }
 }
 
@@ -87,19 +88,98 @@ void ArbolB::eliminar(const string& numero_de_registro) {
         if (raiz->esHoja()) {
             raiz = nullptr;
         } else {
-            raiz = raiz->puntero[0];
+            raiz = raiz->punteros[0];
         }
         delete temp;
     }
 }
 
+
+string ArbolB::generarDot() {
+    stringstream var;
+    var << "digraph ArbolB {\n";
+    var << "node [shape=rect];\n";
+    if (raiz) {
+        int contadorNulo = 0;
+        graficarNodos(var, raiz, contadorNulo);
+    }
+    var << "}\n";
+    return var.str();
+}
+
+void ArbolB::graficarNodos(stringstream& var, NodoB* nodo, int& contadorNulo) {
+    if (!nodo) return;
+
+    var << "node" << nodo << " [label=<\n";
+    var << "<table border=\"0\" cellspacing=\"0\" cellborder=\"1\">\n";
+
+    var << "<tr>\n" << "<td border=\"0\"></td>\n"; 
+    for (int i = 0; i < nodo->clavesUsadas; ++i) {
+        if (i > 0) {
+            var << "<td border=\"0\">| </td>\n"; // Agrega un separador antes de cada número, excepto el primero
+        }
+        var << "<td border=\"0\">" << nodo->claves[i].numero_de_registro << "</td>\n";
+    }
+    var << "<td border=\"0\"></td>\n</tr>\n"; 
+
+    var << "<tr>\n";
+    for (int i = 0; i <= nodo->clavesUsadas; ++i) {
+        var << "<td port=\"p" << i << "\" border=\"0\" width=\"5\" height=\"5\" fixedsize=\"true\"></td>\n";
+        if (i < nodo->clavesUsadas) {
+            var << "<td border=\"0\"></td>\n";
+        }
+    }
+    var << "</tr>\n</table>>];\n";
+
+    if (!nodo->esHoja()) {
+        for (int i = 0; i <= nodo->clavesUsadas; ++i) {
+            if (nodo->punteros[i]) {
+                var << "node" << nodo << ":p" << i << " -> node" << nodo->punteros[i] << ";\n";
+                graficarNodos(var, nodo->punteros[i], contadorNulo);
+            } else {
+                var << "null" << contadorNulo << " [shape=point];\n";
+                var << "node" << nodo << ":p" << i << " -> null" << contadorNulo++ << ";\n";
+            }
+        }
+    } else if (nodo->siguiente) {
+        var << "node" << nodo << " -> node" << nodo->siguiente << " [style=dashed, color=gray];\n";
+    }
+}
+
+void ArbolB::ejecutar(const string& comando) {
+    system(comando.c_str());
+}
+
+void ArbolB::imprimirClaves() {
+    if (raiz) {
+        imprimirClaves(raiz);
+    }
+    cout << endl;
+}
+
+void ArbolB::imprimirClaves(NodoB* nodo) {
+    if (!nodo){ 
+        return;
+    }
+    int temp;
+    for (temp = 0; temp < nodo->clavesUsadas; ++temp) {
+        if (!nodo->esHoja()) {
+            imprimirClaves(nodo->punteros[temp]);
+        }
+        cout << nodo->claves[temp].numero_de_registro << " ";
+    }
+    if (!nodo->esHoja()) {
+        imprimirClaves(nodo->punteros[temp]);
+    }
+}
+
 void ArbolB::graficar(const string& nombreArchivo) {
     ofstream archivo(nombreArchivo + ".dot");
-    archivo << obtenerDot();
+    archivo << generarDot();
     archivo.close();
 
     string comandoDot = "dot -Tpng " + nombreArchivo + ".dot -o " + nombreArchivo + ".png";
-    ejecutarComandos(comandoDot);
+    ejecutar(comandoDot);
 
     #ifdef _WIN32
         string comandoAbrir = "start " + nombreArchivo + ".png";
@@ -108,84 +188,7 @@ void ArbolB::graficar(const string& nombreArchivo) {
     #else
         string comandoAbrir = "xdg-open " + nombreArchivo + ".png";
     #endif
-    ejecutarComandos(comandoAbrir);
-}
-
-string ArbolB::obtenerDot() {
-    stringstream ss;
-    ss << "digraph BTree {\n";
-    ss << "splines=false;\n";
-    ss << "node [shape=rect];\n";
-    if (raiz) {
-        int nullCount = 0;
-        graficarNodo(ss, raiz, nullCount);
-    }
-    ss << "}\n";
-    return ss.str();
-}
-
-void ArbolB::graficarNodo(stringstream& ss, NodoB* nodo, int& nullCount) {
-    if (!nodo) return;
-
-    ss << "node" << nodo << " [label=<\n";
-    ss << "<table border=\"0\" cellspacing=\"0\" cellborder=\"1\">\n";
-    ss << "<tr>\n";
-    for (int i = 0; i < nodo->clavesUsadas; ++i) {
-        ss << "<td border=\"0\"></td>\n";
-        ss << "<td border=\"0\">" << nodo->clave[i].numero_de_registro << "</td>\n";
-    }
-    ss << "<td border=\"0\"></td>\n";
-    ss << "</tr>\n";
-    ss << "<tr>\n";
-    for (int i = 0; i <= nodo->clavesUsadas; ++i) {
-        ss << "<td port=\"p" << i << "\" border=\"0\" width=\"5\" height=\"5\" fixedsize=\"true\" style=\"rounded\"></td>\n";
-        if (i < nodo->clavesUsadas) {
-            ss << "<td border=\"0\"></td>\n";
-        }
-    }
-    ss << "</tr>\n";
-    ss << "</table>>];\n";
-    if (!nodo->esHoja()) {
-        for (int i = 0; i <= nodo->clavesUsadas; ++i) {
-            if (nodo->puntero[i]) {
-                ss << "node" << nodo << ":p" << i << " -> node" << nodo->puntero[i] << ";\n";
-                graficarNodo(ss, nodo->puntero[i], nullCount);
-            } else {
-                ss << "null" << nullCount << " [shape=point];\n";
-                ss << "node" << nodo << ":p" << i << " -> null" << nullCount << ";\n";
-                nullCount++;
-            }
-        }
-    }
-    if (nodo->esHoja() && nodo->siguiente) {
-        ss << "node" << nodo << " -> node" << nodo->siguiente << " [style=dashed, color=gray]\n";
-    }
-}
-
-void ArbolB::ejecutarComandos(const string& comando) {
-    system(comando.c_str());
-}
-
-void ArbolB::imprimirClavesOrdenadas() {
-    if (raiz) {
-        imprimirClavesOrdenadas(raiz);
-    }
-    cout << endl;
-}
-
-void ArbolB::imprimirClavesOrdenadas(NodoB* nodo) {
-    if (!nodo) return;
-
-    int i;
-    for (i = 0; i < nodo->clavesUsadas; ++i) {
-        if (!nodo->esHoja()) {
-            imprimirClavesOrdenadas(nodo->puntero[i]);
-        }
-        cout << nodo->clave[i].numero_de_registro << " ";
-    }
-    if (!nodo->esHoja()) {
-        imprimirClavesOrdenadas(nodo->puntero[i]);
-    }
+    ejecutar(comandoAbrir);
 }
 
 #endif

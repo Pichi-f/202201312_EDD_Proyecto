@@ -7,15 +7,15 @@
 
 class NodoB {
 public:
-    std::vector<nodoAviones> clave;
-    std::vector<NodoB*> puntero;
+    std::vector<nodoAviones> claves;
+    std::vector<NodoB*> punteros;
     int clavesUsadas;
     bool hoja;
     NodoB* siguiente;
 
     NodoB(int m) : clavesUsadas(0), hoja(true) {
-        clave.resize(m - 1);
-        puntero.resize(m);
+        claves.resize(m - 1);
+        punteros.resize(m);
         siguiente = nullptr;
     }
 
@@ -23,23 +23,23 @@ public:
         return hoja;
     }
 
-    bool estaLleno() const {
-        return clavesUsadas == clave.size();
+    bool lleno() const {
+        return clavesUsadas == claves.size();
     }
 
     void insertarClave(const nodoAviones& nuevoAvion) {
         int i = clavesUsadas - 1;
-        while (i >= 0 && nuevoAvion.numero_de_registro < clave[i].numero_de_registro) {
-            clave[i + 1] = clave[i];
+        while (i >= 0 && nuevoAvion.numero_de_registro < claves[i].numero_de_registro) {
+            claves[i + 1] = claves[i];
             i--;
         }
-        clave[i + 1] = nuevoAvion;
+        claves[i + 1] = nuevoAvion;
         clavesUsadas++;
     }
 
-    int encontrarPosicionInsertar(const std::string& numero_registro) {
+    int posicionInsertar(const std::string& numero_registro) {
         int pos = 0;
-        while (pos < clavesUsadas && numero_registro > clave[pos].numero_de_registro) {
+        while (pos < clavesUsadas && numero_registro > claves[pos].numero_de_registro) {
             pos++;
         }
         return pos;
@@ -47,22 +47,22 @@ public:
 
     NodoB* dividirNodo(nodoAviones& mediana) {
         int mid = clavesUsadas / 2;
-        NodoB* nuevoNodo = new NodoB(clave.size() + 1);
+        NodoB* nuevoNodo = new NodoB(claves.size() + 1);
         nuevoNodo->hoja = hoja;
         nuevoNodo->clavesUsadas = clavesUsadas - mid - 1;
 
         for (int i = 0; i < nuevoNodo->clavesUsadas; ++i) {
-            nuevoNodo->clave[i] = clave[mid + 1 + i];
+            nuevoNodo->claves[i] = claves[mid + 1 + i];
         }
 
         if (!hoja) {
             for (int i = 0; i <= nuevoNodo->clavesUsadas; ++i) {
-                nuevoNodo->puntero[i] = puntero[mid + 1 + i];
+                nuevoNodo->punteros[i] = punteros[mid + 1 + i];
             }
         }
 
         clavesUsadas = mid;
-        mediana = clave[mid];
+        mediana = claves[mid];
 
         return nuevoNodo;
     }
@@ -72,7 +72,7 @@ public:
     }
 
     ~NodoB() {
-        for (auto& ptr : puntero) {
+        for (auto& ptr : punteros) {
             delete ptr;
         }
     }
