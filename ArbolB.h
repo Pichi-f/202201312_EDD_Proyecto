@@ -10,21 +10,32 @@
 using namespace std;
 
 class ArbolB {
-    public:
-        NodoB* raiz;
-        int m;
-        ArbolB(int m);
-        void destroyNodo(NodoB* nodo);
-        void insertar(const nodoAviones& nuevoAvion);
-        void insertarNodo(NodoB* nodo, const nodoAviones& nuevoAvion);
-        void eliminar(const string& numero_de_registro);
-        void graficarNodos(stringstream& var, NodoB* nodo, int& contadorNulo);
-        void imprimirClaves(NodoB* nodo);
-        void graficar(const string& nombreArchivo);
-        void imprimirClaves();
-        void ejecutar(const string& comando);
-        string generarDot();
-        virtual ~ArbolB();
+public:
+    NodoB* raiz;
+    int m; 
+    ArbolB(int m);
+    void destroyNodo(NodoB* nodo);
+    void insertar(const nodoAviones& nuevoAvion);
+    void insertarNodo(NodoB* nodo, const nodoAviones& nuevoAvion);
+    void eliminar(const string& numero_de_registro);
+    void eliminarRecursivo(NodoB* nodo, const string& numero_de_registro);
+    void eliminarClaveEnHoja(NodoB* nodo, int idx);
+    void eliminarClaveEnNodoInterno(NodoB* nodo, int idx);
+    void llenar(NodoB* nodo, int idx);
+    NodoB* obtenerPredecesor(NodoB* nodo);
+    NodoB* obtenerSucesor(NodoB* nodo);
+    void prestarDeAnterior(NodoB* nodo, int idx);
+    void prestarDeSiguiente(NodoB* nodo, int idx);
+    void fusionar(NodoB* nodo, int idx);
+    void graficarNodos(stringstream& var, NodoB* nodo, int& contadorNulo);
+    void imprimirClaves(NodoB* nodo);
+    void graficar(const string& nombreArchivo);
+    void imprimirClaves();
+    void ejecutar(const string& comando);
+    string generarDot();
+    nodoAviones* buscar(const string& numero_de_registro);
+
+    virtual ~ArbolB();
 };
 
 ArbolB::ArbolB(int m) : raiz(new NodoB(m)), m(m) {}
@@ -82,7 +93,7 @@ void ArbolB::eliminar(const string& numero_de_registro) {
         cout << "El arbol está vacío" << endl;
         return;
     }
-    raiz->eliminarClave(numero_de_registro);
+    eliminarRecursivo(raiz, numero_de_registro);
     if (raiz->clavesUsadas == 0) {
         NodoB* temp = raiz;
         if (raiz->esHoja()) {
@@ -94,82 +105,199 @@ void ArbolB::eliminar(const string& numero_de_registro) {
     }
 }
 
-
-string ArbolB::generarDot() {
-    stringstream var;
-    var << "digraph ArbolB {\n";
-    var << "node [shape=rect];\n";
-    if (raiz) {
-        int contadorNulo = 0;
-        graficarNodos(var, raiz, contadorNulo);
+void ArbolB::eliminarRecursivo(NodoB* nodo, const string& numero_de_registro) {
+    int idx = 0;
+    while (idx < nodo->clavesUsadas && numero_de_registro > nodo->claves[idx].numero_de_registro) {
+        idx++;
     }
-    var << "}\n";
-    return var.str();
+
+    if (idx < nodo->clavesUsadas && nodo->claves[idx].numero_de_registro == numero_de_registro) {
+        if (nodo->esHoja()) {
+            eliminarClaveEnHoja(nodo, idx);
+        } else {
+            eliminarClaveEnNodoInterno(nodo, idx);
+        }
+    } else {
+        if (nodo->esHoja()) {
+            cout << "La clave " << numero_de_registro << " no existe en el árbol." << endl;
+            return;
+        }
+
+        bool flag = ((idx == nodo->clavesUsadas) ? true : false);
+        if (nodo->punteros[idx]->clavesUsadas < m / 2) {
+            llenar(nodo, idx);
+        }
+
+        if (flag && idx > nodo->clavesUsadas) {
+            eliminarRecursivo(nodo->punteros[idx - 1], numero_de_registro);
+        } else {
+            eliminarRecursivo(nodo->punteros[idx], numero_de_registro);
+        }
+    }
+}
+
+void ArbolB::eliminarClaveEnHoja(NodoB* nodo, int idx) {
+    for (int i = idx + 1; i < nodo->clavesUsadas; ++i) {
+        nodo->claves[i - 1] = nodo->claves[i];
+    }
+    nodo->clavesUsadas--; 
+}
+
+void ArbolB::eliminarClaveEnNodoInterno(NodoB* nodo, int idx) {
+    string clave = nodo->claves[idx].numero_de_registro;
+    if (nodo->punteros[idx]->clavesUsadas >= m / 2) {
+        NodoB* temp = obtenerPredecesor(nodo->punteros[idx]);
+        nodo->claves[idx].numero_de_registro = temp->claves[temp->clavesUsadas - 1].numero_de_registro;
+        eliminarRecursivo(nodo->punteros[idx], temp->claves[temp->clavesUsadas - 1].numero_de_registro);
+    }
+    else if (nodo->punteros[idx + 1]->clavesUsadas >= m / 2) {
+        NodoB* temp = obtenerSucesor(nodo->punteros[idx + 1]);
+        nodo->claves[idx].numero_de_registro = temp->claves[0].numero_de_registro;
+        eliminarRecursivo(nodo->punteros[idx + 1], temp->claves[0].numero_de_registro);
+    }
+    else {
+        fusionar(nodo, idx);
+        eliminarRecursivo(nodo->punteros[idx], clave);
+    }
+}
+
+void ArbolB::llenar(NodoB* nodo, int idx) {
+    if (idx != 0 && nodo->punteros[idx - 1]->clavesUsadas >= m / 2) {
+        prestarDeAnterior(nodo, idx);
+    } else if (idx != nodo->clavesUsadas && nodo->punteros[idx + 1]->clavesUsadas >= m / 2) {
+        prestarDeSiguiente(nodo, idx);
+    } else {
+        if (idx != nodo->clavesUsadas) {
+            fusionar(nodo, idx);
+        } else {
+            fusionar(nodo, idx - 1);
+        }
+    }
+}
+
+NodoB* ArbolB::obtenerPredecesor(NodoB* nodo) {
+    while (!nodo->esHoja()) {
+        nodo = nodo->punteros[nodo->clavesUsadas];
+    }
+    return nodo;
+}
+
+NodoB* ArbolB::obtenerSucesor(NodoB* nodo) {
+    while (!nodo->esHoja()) {
+        nodo = nodo->punteros[0];
+    }
+    return nodo;
+}
+
+void ArbolB::prestarDeAnterior(NodoB* nodo, int idx) {
+    NodoB* hijo = nodo->punteros[idx];
+    NodoB* hermano = nodo->punteros[idx - 1];
+
+    for (int i = hijo->clavesUsadas - 1; i >= 0; --i) {
+        hijo->claves[i + 1] = hijo->claves[i];
+    }
+
+    if (!hijo->esHoja()) {
+        for (int i = hijo->clavesUsadas; i >= 0; --i) {
+            hijo->punteros[i + 1] = hijo->punteros[i];
+        }
+    }
+
+    hijo->claves[0] = nodo->claves[idx - 1];
+
+    if (!hijo->esHoja()) {
+        hijo->punteros[0] = hermano->punteros[hermano->clavesUsadas];
+    }
+
+    nodo->claves[idx - 1] = hermano->claves[hermano->clavesUsadas - 1];
+
+    hijo->clavesUsadas++;
+    hermano->clavesUsadas--;
+}
+
+void ArbolB::prestarDeSiguiente(NodoB* nodo, int idx) {
+    NodoB* hijo = nodo->punteros[idx];
+    NodoB* hermano = nodo->punteros[idx + 1];
+
+    hijo->claves[hijo->clavesUsadas] = nodo->claves[idx];
+
+    if (!hijo->esHoja()) {
+        hijo->punteros[hijo->clavesUsadas + 1] = hermano->punteros[0];
+    }
+
+    nodo->claves[idx] = hermano->claves[0];
+
+    for (int i = 1; i < hermano->clavesUsadas; ++i) {
+        hermano->claves[i - 1] = hermano->claves[i];
+    }
+
+    if (!hermano->esHoja()) {
+        for (int i = 1; i <= hermano->clavesUsadas; ++i) {
+            hermano->punteros[i - 1] = hermano->punteros[i];
+        }
+    }
+
+    hijo->clavesUsadas++;
+    hermano->clavesUsadas--;
+}
+
+void ArbolB::fusionar(NodoB* nodo, int idx) {
+    NodoB* hijo = nodo->punteros[idx];
+    NodoB* hermano = nodo->punteros[idx + 1];
+
+    hijo->claves[m / 2 - 1] = nodo->claves[idx];
+
+    for (int i = 0; i < hermano->clavesUsadas; ++i) {
+        hijo->claves[i + m / 2] = hermano->claves[i];
+    }
+
+    if (!hijo->esHoja()) {
+        for (int i = 0; i <= hermano->clavesUsadas; ++i) {
+            hijo->punteros[i + m / 2] = hermano->punteros[i];
+        }
+    }
+
+    for (int i = idx + 1; i < nodo->clavesUsadas; ++i) {
+        nodo->claves[i - 1] = nodo->claves[i];
+    }
+
+    for (int i = idx + 2; i <= nodo->clavesUsadas; ++i) {
+        nodo->punteros[i - 1] = nodo->punteros[i];
+    }
+
+    hijo->clavesUsadas += hermano->clavesUsadas + 1;
+    nodo->clavesUsadas--;
+
+    delete hermano;
 }
 
 void ArbolB::graficarNodos(stringstream& var, NodoB* nodo, int& contadorNulo) {
-    if (!nodo) return;
-
-    var << "node" << nodo << " [label=<\n";
-    var << "<table border=\"0\" cellspacing=\"0\" cellborder=\"1\">\n";
-
-    var << "<tr>\n" << "<td border=\"0\"></td>\n"; 
+    var << "node" << nodo << " [label=\"";
     for (int i = 0; i < nodo->clavesUsadas; ++i) {
-        if (i > 0) {
-            var << "<td border=\"0\">| </td>\n"; // Agrega un separador antes de cada número, excepto el primero
-        }
-        var << "<td border=\"0\">" << nodo->claves[i].numero_de_registro << "</td>\n";
+        var << "<f" << i << "> |" << nodo->claves[i].numero_de_registro << "|";
     }
-    var << "<td border=\"0\"></td>\n</tr>\n"; 
-
-    var << "<tr>\n";
+    var << "<f" << nodo->clavesUsadas << ">\"];\n";
     for (int i = 0; i <= nodo->clavesUsadas; ++i) {
-        var << "<td port=\"p" << i << "\" border=\"0\" width=\"5\" height=\"5\" fixedsize=\"true\"></td>\n";
-        if (i < nodo->clavesUsadas) {
-            var << "<td border=\"0\"></td>\n";
+        if (nodo->punteros[i]) {
+            var << "node" << nodo << ":f" << i << " -> node" << nodo->punteros[i] << ";\n";
+            graficarNodos(var, nodo->punteros[i], contadorNulo);
+        } else {
+            var << "node" << nodo << ":f" << i << " -> nodeNulo" << contadorNulo << ";\n";
+            var << "nodeNulo" << contadorNulo << " [label=\"Nulo\", shape=point];\n";
+            contadorNulo++;
         }
     }
-    var << "</tr>\n</table>>];\n";
-
-    if (!nodo->esHoja()) {
-        for (int i = 0; i <= nodo->clavesUsadas; ++i) {
-            if (nodo->punteros[i]) {
-                var << "node" << nodo << ":p" << i << " -> node" << nodo->punteros[i] << ";\n";
-                graficarNodos(var, nodo->punteros[i], contadorNulo);
-            } else {
-                var << "null" << contadorNulo << " [shape=point];\n";
-                var << "node" << nodo << ":p" << i << " -> null" << contadorNulo++ << ";\n";
-            }
-        }
-    } else if (nodo->siguiente) {
-        var << "node" << nodo << " -> node" << nodo->siguiente << " [style=dashed, color=gray];\n";
-    }
-}
-
-void ArbolB::ejecutar(const string& comando) {
-    system(comando.c_str());
-}
-
-void ArbolB::imprimirClaves() {
-    if (raiz) {
-        imprimirClaves(raiz);
-    }
-    cout << endl;
 }
 
 void ArbolB::imprimirClaves(NodoB* nodo) {
-    if (!nodo){ 
-        return;
-    }
-    int temp;
-    for (temp = 0; temp < nodo->clavesUsadas; ++temp) {
+    for (int i = 0; i < nodo->clavesUsadas; ++i) {
         if (!nodo->esHoja()) {
-            imprimirClaves(nodo->punteros[temp]);
+            imprimirClaves(nodo->punteros[i]);
         }
-        cout << nodo->claves[temp].numero_de_registro << " ";
+        cout << nodo->claves[i].numero_de_registro << " ";
     }
     if (!nodo->esHoja()) {
-        imprimirClaves(nodo->punteros[temp]);
+        imprimirClaves(nodo->punteros[nodo->clavesUsadas]);
     }
 }
 
@@ -191,4 +319,42 @@ void ArbolB::graficar(const string& nombreArchivo) {
     ejecutar(comandoAbrir);
 }
 
-#endif
+void ArbolB::imprimirClaves() {
+    if (raiz != nullptr) {
+        imprimirClaves(raiz);
+        cout << endl;
+    } else {
+        cout << "El árbol está vacío." << endl;
+    }
+}
+
+void ArbolB::ejecutar(const string& comando) {
+    system(comando.c_str());
+}
+
+string ArbolB::generarDot() {
+    stringstream var;
+    int contadorNulo = 0;
+    var << "digraph G {\n";
+    var << "node [shape = record,height=.1];\n";
+    graficarNodos(var, raiz, contadorNulo);
+    var << "}\n";
+    return var.str();
+}
+
+nodoAviones* ArbolB::buscar(const string& numero_de_registro) {
+    NodoB* actual = raiz;
+    while (actual != nullptr) {
+        int i = 0;
+        while (i < actual->clavesUsadas && numero_de_registro > actual->claves[i].numero_de_registro) {
+            i++;
+        }
+        if (i < actual->clavesUsadas && numero_de_registro == actual->claves[i].numero_de_registro) {
+            return &actual->claves[i];
+        }
+        actual = actual->punteros[i];
+    }
+    return nullptr;
+}
+
+#endif // ARBOLB_H

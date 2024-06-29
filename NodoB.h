@@ -68,7 +68,6 @@ public:
     }
 
     void eliminarClave(const std::string& numeroDeRegistro) {
-        // Implementación específica de eliminación según las reglas del árbol B
     }
 
     ~NodoB() {

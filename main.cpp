@@ -77,6 +77,55 @@ void cargarAviones() {
     }
 }
 
+void comparacion(const std::string& palabra) {
+    std::string comando, estado, registro;
+    std::stringstream ss(palabra);
+    std::getline(ss, comando, ',');
+    std::getline(ss, estado, ',');
+    std::getline(ss, registro, ',');
+    std::transform(estado.begin(), estado.end(), estado.begin(), ::toupper);
+
+    if (estado == "INGRESO") {
+        nodoAviones* avion = arbol->buscar(registro);
+        if (avion) {
+            aviones->insertar(avion->vuelo, avion->numero_de_registro, avion->modelo, avion->capacidad, avion->aerolinea, avion->ciudad_destino, "Mantenimiento");
+            arbol->eliminar(registro);
+            cout << "El avión con número de registro " << registro << " ha sido ingresado a mantenimiento" << endl;
+        }
+    } else if (estado == "SALIDA") {
+        nodoAviones* avion = aviones->buscar(registro);
+        if (avion) {
+            arbol->insertar(*avion);
+            aviones->eliminar(registro);
+            cout << "El avión con número de registro " << registro << " ha salido de mantenimiento" << endl;
+        }
+    }
+}
+
+void cargaMovimientos() {
+    std::ifstream archivo("movimientos.txt");
+    if (!archivo.is_open()) {
+        std::cout << "No se pudo abrir el archivo" << std::endl;
+        return;
+    }
+    std::string str((std::istreambuf_iterator<char>(archivo)), std::istreambuf_iterator<char>());
+    archivo.close();
+
+    std::stringstream ss(str);
+    std::string token;
+    while (std::getline(ss, token, ';')) {
+        std::transform(token.begin(), token.end(), token.begin(), ::toupper);
+        token.erase(std::remove_if(token.begin(), token.end(), ::isspace), token.end());
+        std::istringstream iss(token);
+        std::string palabra;
+        while (iss >> palabra) {
+            comparacion(palabra);
+            cout << "entrando a comparacion" << endl;
+        }
+    }
+}
+
+
 void menuReomendarRuta(){
     cout << "" << endl;
     cout << "Seleccione el recorrido" << endl;
@@ -106,6 +155,7 @@ int main(){
                 break;
             case 4:
                 cout << "Carga de movimientos" << endl;
+                cargaMovimientos();
                 break;
             case 5:
                 cout << "Consulta de horas de vuelo (Pilotos)" << endl;

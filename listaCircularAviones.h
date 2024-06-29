@@ -8,10 +8,14 @@ class listaCircularAviones{
     public:
         nodoAviones *primero;
         nodoAviones *ultimo;
+        int tamano;
         listaCircularAviones();
         void insertar(string vuelo, string numero_de_registro, string modelo, int capacidad, string aerolinea, string ciudad_destino, string estado);
         void mostrar();
         void graficar(string Nombre);
+        nodoAviones* cambiarEstado(string estado, string numero_de_registro);
+        nodoAviones* buscar(string numero_de_registro);
+        void eliminar(string numero_de_registro);
         virtual ~listaCircularAviones();
 };
 
@@ -72,7 +76,6 @@ void listaCircularAviones::graficar(string Nombre){
     string comando = "dot -Tpng " + Nombre + ".dot -o " + Nombre + ".png";
     system(comando.c_str());
 
-    // Detectar el sistema operativo y elegir el comando adecuado para abrir la imagen
     #ifdef _WIN32
     comando = "explorer " + Nombre + ".png";
     #elif __APPLE__
@@ -83,6 +86,38 @@ void listaCircularAviones::graficar(string Nombre){
     #error "OS not supported!"
     #endif
     system(comando.c_str());
+}
 
+nodoAviones* listaCircularAviones::buscar(string numero_de_registro) {
+    if (primero == nullptr) return nullptr;
+    nodoAviones* actual = primero;
+    do {
+        if (actual->numero_de_registro == numero_de_registro) return actual;
+        actual = actual->siguiente;
+    } while (actual != primero);
+    return nullptr;
+}
 
+void listaCircularAviones::eliminar(string numero_de_registro) {
+    nodoAviones* nodo_a_eliminar = buscar(numero_de_registro);
+    if (nodo_a_eliminar == nullptr) return;
+
+    if (primero == ultimo && primero == nodo_a_eliminar) {
+        delete primero;
+        primero = ultimo = nullptr;
+    } else if (nodo_a_eliminar == primero) {
+        primero = primero->siguiente;
+        ultimo->siguiente = primero;
+        primero->anterior = ultimo;
+        delete nodo_a_eliminar;
+    } else if (nodo_a_eliminar == ultimo) {
+        ultimo = ultimo->anterior;
+        ultimo->siguiente = primero;
+        primero->anterior = ultimo;
+        delete nodo_a_eliminar;
+    } else {
+        nodo_a_eliminar->anterior->siguiente = nodo_a_eliminar->siguiente;
+        nodo_a_eliminar->siguiente->anterior = nodo_a_eliminar->anterior;
+        delete nodo_a_eliminar;
+    }
 }
