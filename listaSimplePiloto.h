@@ -12,6 +12,7 @@ class listaSimplePiloto{
         bool estaVacia();
         void insertarFinal(string nombre, string nacionalidad, string numero_de_id, string vuelo, int horas_de_vuelo, string tipo_de_licencia);
         void visualizarLista();
+        void eliminar(string numero_de_id);
         virtual ~listaSimplePiloto();
 };
 
@@ -47,6 +48,24 @@ void listaSimplePiloto::visualizarLista(){
             cout << nodoDato << (actual->siguiente != nullptr ? " -> " : "\n");
             actual = actual->siguiente;
         }
+    }
+}
+
+void listaSimplePiloto::eliminar(string numero_de_id){
+    nodoPiloto *actual = primero;
+    nodoPiloto *anterior = nullptr;
+    while (actual != nullptr){
+        if (actual->numero_de_id == numero_de_id){
+            if (anterior == nullptr){
+                primero = actual->siguiente;
+            } else {
+                anterior->siguiente = actual->siguiente;
+            }
+            delete actual;
+            return;
+        }
+        anterior = actual;
+        actual = actual->siguiente;
     }
 }
 

@@ -2,44 +2,44 @@
 #include <string>
 #include <fstream>
 #include "nodoPiloto.h"
+#include <vector>   
 
 using namespace std;
 
-class pilotosABB{
-    public:
-        ofstream archivo;
-        nodoPiloto *raiz;
-        int nodoDato;
-        int recorrido = 0;
-        pilotosABB();
-        bool esVacio();
-        void insertar(string nombre, string nacionalidad, string numero_de_id, string vuelo, int horas_de_vuelo, string tipo_de_licencia);
-        nodoPiloto* insertarNodo(string nombre, string nacionalidad, string numero_de_id, string vuelo, int horas_de_vuelo, string tipo_de_licencia, nodoPiloto *nodoPtr);
-        void generarReporte();
-        void imprimirNodo(nodoPiloto* nodoPtr);
-        void preOrden(nodoPiloto *);
-        void inOrden(nodoPiloto *);
-        void postOrden(nodoPiloto *);
-        virtual ~pilotosABB();
+class pilotosABB {
+public:
+    ofstream archivo;
+    nodoPiloto *raiz;
+    int nodoDato;
+    int recorrido = 0;
+    pilotosABB();
+    bool esVacio();
+    void insertar(string nombre, string nacionalidad, string numero_de_id, string vuelo, int horas_de_vuelo, string tipo_de_licencia);
+    nodoPiloto* insertarNodo(string nombre, string nacionalidad, string numero_de_id, string vuelo, int horas_de_vuelo, string tipo_de_licencia, nodoPiloto *nodoPtr);
+    void generarReporte();
+    void imprimirNodo(nodoPiloto* nodoPtr);
+    void preOrden(nodoPiloto *);
+    void inOrden(nodoPiloto *);
+    void postOrden(nodoPiloto *);
+    void eliminar(string numero_de_id);
+    nodoPiloto* eliminarNodo(nodoPiloto* raiz, string numero_de_id);
+    nodoPiloto* encontrarMinimo(nodoPiloto* nodo); 
+    virtual ~pilotosABB();
 };
 
-pilotosABB::pilotosABB()
-{
+pilotosABB::pilotosABB() {
     raiz = nullptr;
 }
 
-bool pilotosABB::esVacio()
-{
+bool pilotosABB::esVacio() {
     return raiz == nullptr;
 }
 
-void pilotosABB::insertar(string nombre, string nacionalidad, string numero_de_id, string vuelo, int horas_de_vuelo, string tipo_de_licencia)
-{
+void pilotosABB::insertar(string nombre, string nacionalidad, string numero_de_id, string vuelo, int horas_de_vuelo, string tipo_de_licencia) {
     raiz = insertarNodo(nombre, nacionalidad, numero_de_id, vuelo, horas_de_vuelo, tipo_de_licencia, raiz);
 }
 
-nodoPiloto* pilotosABB::insertarNodo(string nombre, string nacionalidad, string numero_de_id, string vuelo, int horas_de_vuelo, string tipo_de_licencia, nodoPiloto *nodoPtr)
-{
+nodoPiloto* pilotosABB::insertarNodo(string nombre, string nacionalidad, string numero_de_id, string vuelo, int horas_de_vuelo, string tipo_de_licencia, nodoPiloto *nodoPtr) {
     if (nodoPtr == nullptr) {
         nodoPtr = new nodoPiloto(nombre, nacionalidad, numero_de_id, vuelo, horas_de_vuelo, tipo_de_licencia);
     } else if (horas_de_vuelo < nodoPtr->horas_de_vuelo) {
@@ -52,13 +52,11 @@ nodoPiloto* pilotosABB::insertarNodo(string nombre, string nacionalidad, string 
     return nodoPtr;
 }
 
-pilotosABB::~pilotosABB()
-{
+pilotosABB::~pilotosABB() {
 }
 
-void pilotosABB::preOrden(nodoPiloto *nodoPtr){
-    if (nodoPtr == nullptr)
-    {
+void pilotosABB::preOrden(nodoPiloto *nodoPtr) {
+    if (nodoPtr == nullptr) {
         return;
     }
     cout << nodoPtr->horas_de_vuelo << " - ";
@@ -66,9 +64,8 @@ void pilotosABB::preOrden(nodoPiloto *nodoPtr){
     preOrden(nodoPtr->derecho);
 }
 
-void pilotosABB::inOrden(nodoPiloto *nodoPtr){
-    if (nodoPtr == nullptr)
-    {
+void pilotosABB::inOrden(nodoPiloto *nodoPtr) {
+    if (nodoPtr == nullptr) {
         return;
     }
     inOrden(nodoPtr->izquierdo);
@@ -76,9 +73,8 @@ void pilotosABB::inOrden(nodoPiloto *nodoPtr){
     inOrden(nodoPtr->derecho);
 }
 
-void pilotosABB::postOrden(nodoPiloto *nodoPtr){
-    if (nodoPtr == nullptr)
-    {
+void pilotosABB::postOrden(nodoPiloto *nodoPtr) {
+    if (nodoPtr == nullptr) {
         return;
     }
     postOrden(nodoPtr->izquierdo);
@@ -86,9 +82,8 @@ void pilotosABB::postOrden(nodoPiloto *nodoPtr){
     cout << nodoPtr->horas_de_vuelo << " - ";
 }
 
-void pilotosABB::generarReporte(){
-    if (pilotosABB::esVacio()){}
-    else{
+void pilotosABB::generarReporte() {
+    if (!esVacio()) {
         archivo.open("pilotos.dot", ios::out);
         archivo << "digraph G {" << endl;
 
@@ -99,13 +94,13 @@ void pilotosABB::generarReporte(){
         system("dot -Tpng pilotos.dot -o pilotos.png");
         system("pilotos.png");
     }
-} 
+}
 
-void pilotosABB::imprimirNodo(nodoPiloto* nodoPtr){
-    if (nodoPtr == nullptr){
+void pilotosABB::imprimirNodo(nodoPiloto* nodoPtr) {
+    if (nodoPtr == nullptr) {
         return;
     }
-    if (nodoPtr->izquierdo != nullptr){
+    if (nodoPtr->izquierdo != nullptr) {
         nodoDato = nodoPtr->horas_de_vuelo;
         archivo << nodoDato;
         archivo << "->";
@@ -115,7 +110,7 @@ void pilotosABB::imprimirNodo(nodoPiloto* nodoPtr){
     }
     imprimirNodo(nodoPtr->izquierdo);
 
-    if (nodoPtr->derecho != nullptr){
+    if (nodoPtr->derecho != nullptr) {
         nodoDato = nodoPtr->horas_de_vuelo;
         archivo << nodoDato;
         archivo << "->";
@@ -124,4 +119,57 @@ void pilotosABB::imprimirNodo(nodoPiloto* nodoPtr){
         archivo << ";";
     }
     imprimirNodo(nodoPtr->derecho);
+}
+
+void pilotosABB::eliminar(string numero_de_id) {
+    raiz = eliminarNodo(raiz, numero_de_id);
+}
+
+nodoPiloto* pilotosABB::eliminarNodo(nodoPiloto* raiz, string numero_de_id) {
+    if (raiz == nullptr) {
+        return nullptr;
+    }
+
+    // Si el número de ID a eliminar es menor que el del nodo actual, buscar en el subárbol izquierdo
+    if (numero_de_id < raiz->numero_de_id) {
+        raiz->izquierdo = eliminarNodo(raiz->izquierdo, numero_de_id);
+    }
+    // Si el número de ID a eliminar es mayor que el del nodo actual, buscar en el subárbol derecho
+    else if (numero_de_id > raiz->numero_de_id) {
+        raiz->derecho = eliminarNodo(raiz->derecho, numero_de_id);
+    }
+    // Si el número de ID a eliminar es igual al del nodo actual, proceder a eliminarlo
+    else if (numero_de_id == raiz->numero_de_id) {
+        // Caso 1: Nodo sin hijos
+        if (raiz->izquierdo == nullptr && raiz->derecho == nullptr) {
+            delete raiz;
+            return nullptr;
+        }
+        // Caso 2: Nodo con un solo hijo
+        else if (raiz->izquierdo == nullptr) {
+            nodoPiloto* temp = raiz->derecho;
+            delete raiz;
+            return temp;
+        }
+        else if (raiz->derecho == nullptr) {
+            nodoPiloto* temp = raiz->izquierdo;
+            delete raiz;
+            return temp;
+        }
+        // Caso 3: Nodo con dos hijos
+        else {
+            nodoPiloto* temp = encontrarMinimo(raiz->derecho);
+            raiz->numero_de_id = temp->numero_de_id;
+            raiz->horas_de_vuelo = temp->horas_de_vuelo;
+            raiz->derecho = eliminarNodo(raiz->derecho, temp->numero_de_id);
+        }
+    }
+    return raiz;
+}
+
+nodoPiloto* pilotosABB::encontrarMinimo(nodoPiloto* nodo) {
+    while (nodo->izquierdo != nullptr) {
+        nodo = nodo->izquierdo;
+    }
+    return nodo;
 }

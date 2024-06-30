@@ -2,6 +2,7 @@
 #include <string>
 #include "json.hpp"
 #include <fstream>
+#include <regex>
 #include "pilotosABB.h"
 #include "listaCircularAviones.h"
 #include "tablaHash.h"
@@ -80,9 +81,11 @@ void cargarAviones() {
 void comparacion(const std::string& palabra) {
     std::string comando, estado, registro;
     std::stringstream ss(palabra);
+
     std::getline(ss, comando, ',');
     std::getline(ss, estado, ',');
-    std::getline(ss, registro, ',');
+    std::getline(ss, registro, ';'); 
+
     std::transform(estado.begin(), estado.end(), estado.begin(), ::toupper);
 
     if (estado == "INGRESO") {
@@ -90,15 +93,29 @@ void comparacion(const std::string& palabra) {
         if (avion) {
             aviones->insertar(avion->vuelo, avion->numero_de_registro, avion->modelo, avion->capacidad, avion->aerolinea, avion->ciudad_destino, "Mantenimiento");
             arbol->eliminar(registro);
-            cout << "El avión con número de registro " << registro << " ha sido ingresado a mantenimiento" << endl;
+            std::cout << "El avión con número de registro " << registro << " ha sido ingresado a mantenimiento" << std::endl;
         }
     } else if (estado == "SALIDA") {
         nodoAviones* avion = aviones->buscar(registro);
         if (avion) {
             arbol->insertar(*avion);
             aviones->eliminar(registro);
-            cout << "El avión con número de registro " << registro << " ha salido de mantenimiento" << endl;
+            std::cout << "El avión con número de registro " << registro << " ha salido de mantenimiento" << std::endl;
         }
+    } 
+}
+
+void procesarComandoDarDeBaja(const std::string& comando) {
+    std::regex patron("DarDeBaja\\s*\\(\\s*(X[A-Za-z]?\\d+)\\s*\\)\\s*;?");
+    std::smatch coincidencia;
+
+    if (std::regex_search(comando, coincidencia, patron)) {
+        std::string numero_de_id = coincidencia[1];
+        std::cout << "Dar de baja al piloto con número de identificación " << numero_de_id << std::endl;
+        pilotos->eliminar(numero_de_id);
+        tabla->eliminar(numero_de_id);
+    } else {
+        std::cout << "Error: El comando DarDeBaja no tiene el formato correcto." << std::endl;
     }
 }
 
@@ -108,21 +125,17 @@ void cargaMovimientos() {
         std::cout << "No se pudo abrir el archivo" << std::endl;
         return;
     }
-    std::string str((std::istreambuf_iterator<char>(archivo)), std::istreambuf_iterator<char>());
-    archivo.close();
 
-    std::stringstream ss(str);
-    std::string token;
-    while (std::getline(ss, token, ';')) {
-        std::transform(token.begin(), token.end(), token.begin(), ::toupper);
-        token.erase(std::remove_if(token.begin(), token.end(), ::isspace), token.end());
-        std::istringstream iss(token);
-        std::string palabra;
-        while (iss >> palabra) {
-            comparacion(palabra);
-            cout << "entrando a comparacion" << endl;
+    std::string linea;
+    while (std::getline(archivo, linea)) {
+        if (linea.find("DarDeBaja") != std::string::npos) {
+            procesarComandoDarDeBaja(linea);
+        } else {
+            comparacion(linea);
         }
     }
+
+    archivo.close();
 }
 
 

@@ -18,6 +18,7 @@ class tablaHash{
         void insertar(string nombre, string nacionalidad, string numero_de_id, string vuelo, int horas_de_vuelo, string tipo_de_licencia);
         void imprimirTabla();
         void generarGraphviz();
+        void eliminar(string numero_de_id);
         virtual ~tablaHash();
 };
 
@@ -97,6 +98,11 @@ void tablaHash::generarGraphviz() {
     archivo.close();
 
     system("dot -Tpng tablaHash.dot -o tablaHash.png");
+}
+
+void tablaHash::eliminar(string numero_de_id){
+    int indice = Clave(numero_de_id);
+    tabla[indice].eliminar(numero_de_id);
 }
 
 #endif
