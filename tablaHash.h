@@ -64,16 +64,12 @@ void tablaHash::generarGraphviz() {
     archivo << "node [shape=record];" << std::endl;
     archivo << "rankdir=LR;" << std::endl;
 
-    // Imprimir todas las claves en orden descendente
     for (int i = tamTabla - 1; i >= 0; i--) {
         archivo << "subgraph cluster_" << i << " {" << std::endl;
         archivo << "style=filled;" << std::endl;
         archivo << "color=lightgrey;" << std::endl;
-
-        // Nodo para la clave (sin datos)
         archivo << "nodoClave" << i << " [label=\"" << i << "\"];" << std::endl; 
 
-        // Si la lista no está vacía, imprimir los datos a la derecha
         if (!tabla[i].estaVacia()) {
             nodoPiloto* actual = tabla[i].primero;
             std::string nodoAnterior = "nodoClave" + std::to_string(i);
@@ -82,7 +78,6 @@ void tablaHash::generarGraphviz() {
                 std::string nombreNodoActual = "nodoDatos" + std::to_string(i) + "_" + std::to_string(contador);
                 archivo << nombreNodoActual << " [label=\"" << actual->numero_de_id << "\", shape=record, style=filled, color=white];" << std::endl;
                 
-                // Conectar el nodo anterior con el actual
                 archivo << nodoAnterior << " -> " << nombreNodoActual << ";" << std::endl;
                 
                 nodoAnterior = nombreNodoActual;

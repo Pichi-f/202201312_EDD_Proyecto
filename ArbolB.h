@@ -12,8 +12,10 @@ using namespace std;
 class ArbolB {
 public:
     NodoB* raiz;
-    int m; 
+    int m;  
     ArbolB(int m);
+    ~ArbolB();
+
     void destroyNodo(NodoB* nodo);
     void insertar(const nodoAviones& nuevoAvion);
     void insertarNodo(NodoB* nodo, const nodoAviones& nuevoAvion);
@@ -35,7 +37,8 @@ public:
     string generarDot();
     nodoAviones* buscar(const string& numero_de_registro);
 
-    virtual ~ArbolB();
+private:
+    int minimo() { return (m + 1) / 2 - 1; } 
 };
 
 ArbolB::ArbolB(int m) : raiz(new NodoB(m)), m(m) {}
@@ -124,7 +127,7 @@ void ArbolB::eliminarRecursivo(NodoB* nodo, const string& numero_de_registro) {
         }
 
         bool flag = ((idx == nodo->clavesUsadas) ? true : false);
-        if (nodo->punteros[idx]->clavesUsadas < m / 2) {
+        if (nodo->punteros[idx]->clavesUsadas < minimo()) {
             llenar(nodo, idx);
         }
 
@@ -145,26 +148,24 @@ void ArbolB::eliminarClaveEnHoja(NodoB* nodo, int idx) {
 
 void ArbolB::eliminarClaveEnNodoInterno(NodoB* nodo, int idx) {
     string clave = nodo->claves[idx].numero_de_registro;
-    if (nodo->punteros[idx]->clavesUsadas >= m / 2) {
+    if (nodo->punteros[idx]->clavesUsadas >= minimo()) {
         NodoB* temp = obtenerPredecesor(nodo->punteros[idx]);
-        nodo->claves[idx].numero_de_registro = temp->claves[temp->clavesUsadas - 1].numero_de_registro;
+        nodo->claves[idx] = temp->claves[temp->clavesUsadas - 1];
         eliminarRecursivo(nodo->punteros[idx], temp->claves[temp->clavesUsadas - 1].numero_de_registro);
-    }
-    else if (nodo->punteros[idx + 1]->clavesUsadas >= m / 2) {
+    } else if (nodo->punteros[idx + 1]->clavesUsadas >= minimo()) {
         NodoB* temp = obtenerSucesor(nodo->punteros[idx + 1]);
-        nodo->claves[idx].numero_de_registro = temp->claves[0].numero_de_registro;
+        nodo->claves[idx] = temp->claves[0];
         eliminarRecursivo(nodo->punteros[idx + 1], temp->claves[0].numero_de_registro);
-    }
-    else {
+    } else {
         fusionar(nodo, idx);
         eliminarRecursivo(nodo->punteros[idx], clave);
     }
 }
 
 void ArbolB::llenar(NodoB* nodo, int idx) {
-    if (idx != 0 && nodo->punteros[idx - 1]->clavesUsadas >= m / 2) {
+    if (idx != 0 && nodo->punteros[idx - 1]->clavesUsadas >= minimo()) {
         prestarDeAnterior(nodo, idx);
-    } else if (idx != nodo->clavesUsadas && nodo->punteros[idx + 1]->clavesUsadas >= m / 2) {
+    } else if (idx != nodo->clavesUsadas && nodo->punteros[idx + 1]->clavesUsadas >= minimo()) {
         prestarDeSiguiente(nodo, idx);
     } else {
         if (idx != nodo->clavesUsadas) {
@@ -245,15 +246,15 @@ void ArbolB::fusionar(NodoB* nodo, int idx) {
     NodoB* hijo = nodo->punteros[idx];
     NodoB* hermano = nodo->punteros[idx + 1];
 
-    hijo->claves[m / 2 - 1] = nodo->claves[idx];
+    hijo->claves[minimo()] = nodo->claves[idx];
 
     for (int i = 0; i < hermano->clavesUsadas; ++i) {
-        hijo->claves[i + m / 2] = hermano->claves[i];
+        hijo->claves[i + minimo() + 1] = hermano->claves[i];
     }
 
     if (!hijo->esHoja()) {
         for (int i = 0; i <= hermano->clavesUsadas; ++i) {
-            hijo->punteros[i + m / 2] = hermano->punteros[i];
+            hijo->punteros[i + minimo() + 1] = hermano->punteros[i];
         }
     }
 

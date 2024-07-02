@@ -1,0 +1,16 @@
+Girona/Madrid/23;
+Madrid/Girona/26;
+Madrid/Barcelona/21;
+Barcelona/Madrid/35;
+Barcelona/Zaragoza/30;
+Barcelona/Sevilla/40;
+Sevilla/Valencia/11;
+Sevilla/Bilbao/24;
+Bilbao/Granada/17;
+Bilbao/Sevilla/24;
+Granada/Murcia/9;
+Granada/Córdoba/16;
+Granada/Girona/29;
+Murcia/Girona/19;
+Murcia/Madrid/40;
+Córdoba/Bilbao/22;

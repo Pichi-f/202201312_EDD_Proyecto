@@ -2,7 +2,7 @@
 #include <string>
 #include <fstream>
 #include "nodoPiloto.h"
-#include <vector>   
+#include <vector>
 
 using namespace std;
 
@@ -23,7 +23,7 @@ public:
     void postOrden(nodoPiloto *);
     void eliminar(string numero_de_id);
     nodoPiloto* eliminarNodo(nodoPiloto* raiz, string numero_de_id);
-    nodoPiloto* encontrarMinimo(nodoPiloto* nodo); 
+    nodoPiloto* encontrarMaximo(nodoPiloto* nodo); 
     virtual ~pilotosABB();
 };
 
@@ -47,7 +47,8 @@ nodoPiloto* pilotosABB::insertarNodo(string nombre, string nacionalidad, string 
     } else if (horas_de_vuelo > nodoPtr->horas_de_vuelo) {
         nodoPtr->derecho = insertarNodo(nombre, nacionalidad, numero_de_id, vuelo, horas_de_vuelo, tipo_de_licencia, nodoPtr->derecho);
     } else {
-        cout << "El piloto ya existe" << endl;
+        cout << "El piloto ya existe y está registrado de la siguiente manera: " << endl;
+        cout << "Nombre: " << nodoPtr->nombre << " con horas: " << nodoPtr->horas_de_vuelo << endl;
     }
     return nodoPtr;
 }
@@ -130,22 +131,17 @@ nodoPiloto* pilotosABB::eliminarNodo(nodoPiloto* raiz, string numero_de_id) {
         return nullptr;
     }
 
-    // Si el número de ID a eliminar es menor que el del nodo actual, buscar en el subárbol izquierdo
     if (numero_de_id < raiz->numero_de_id) {
         raiz->izquierdo = eliminarNodo(raiz->izquierdo, numero_de_id);
     }
-    // Si el número de ID a eliminar es mayor que el del nodo actual, buscar en el subárbol derecho
     else if (numero_de_id > raiz->numero_de_id) {
         raiz->derecho = eliminarNodo(raiz->derecho, numero_de_id);
     }
-    // Si el número de ID a eliminar es igual al del nodo actual, proceder a eliminarlo
-    else if (numero_de_id == raiz->numero_de_id) {
-        // Caso 1: Nodo sin hijos
+    else {
         if (raiz->izquierdo == nullptr && raiz->derecho == nullptr) {
             delete raiz;
             return nullptr;
         }
-        // Caso 2: Nodo con un solo hijo
         else if (raiz->izquierdo == nullptr) {
             nodoPiloto* temp = raiz->derecho;
             delete raiz;
@@ -156,20 +152,23 @@ nodoPiloto* pilotosABB::eliminarNodo(nodoPiloto* raiz, string numero_de_id) {
             delete raiz;
             return temp;
         }
-        // Caso 3: Nodo con dos hijos
         else {
-            nodoPiloto* temp = encontrarMinimo(raiz->derecho);
+            nodoPiloto* temp = encontrarMaximo(raiz->izquierdo);
+            raiz->nombre = temp->nombre;
+            raiz->nacionalidad = temp->nacionalidad;
             raiz->numero_de_id = temp->numero_de_id;
+            raiz->vuelo = temp->vuelo;
             raiz->horas_de_vuelo = temp->horas_de_vuelo;
-            raiz->derecho = eliminarNodo(raiz->derecho, temp->numero_de_id);
+            raiz->tipo_de_licencia = temp->tipo_de_licencia;
+            raiz->izquierdo = eliminarNodo(raiz->izquierdo, temp->numero_de_id);
         }
     }
     return raiz;
 }
 
-nodoPiloto* pilotosABB::encontrarMinimo(nodoPiloto* nodo) {
-    while (nodo->izquierdo != nullptr) {
-        nodo = nodo->izquierdo;
+nodoPiloto* pilotosABB::encontrarMaximo(nodoPiloto* nodo) {
+    while (nodo->derecho != nullptr) {
+        nodo = nodo->derecho;
     }
     return nodo;
 }

@@ -3,15 +3,19 @@
 #include "json.hpp"
 #include <fstream>
 #include <regex>
+#include <limits>
 #include "pilotosABB.h"
 #include "listaCircularAviones.h"
 #include "tablaHash.h"
 #include "ArbolB.h"
+#include "Grafo.h"
 
+std::unordered_map<std::string, ListaAdyacencia*> adyacencia;
 listaCircularAviones *aviones = new listaCircularAviones();
 pilotosABB *pilotos = new pilotosABB();
 tablaHash *tabla = new tablaHash();
 ArbolB *arbol = new ArbolB(5);
+Grafo grafo;
 
 using namespace std;
 using json = nlohmann::json;
@@ -106,7 +110,7 @@ void comparacion(const std::string& palabra) {
 }
 
 void procesarComandoDarDeBaja(const std::string& comando) {
-    std::regex patron("DarDeBaja\\s*\\(\\s*(X[A-Za-z]?\\d+)\\s*\\)\\s*;?");
+    std::regex patron("DarDeBaja\\s*\\(\\s*([A-Za-z]?\\d+)\\s*\\)\\s*;?");
     std::smatch coincidencia;
 
     if (std::regex_search(comando, coincidencia, patron)) {
@@ -154,6 +158,7 @@ int main(){
         menuPrincipal();
         cout << "Ingrese una opcion: ";
         cin >> opcion;
+        cout << "" << endl;
         switch(opcion){
             case 1:
                 cout << "Carga de aviones" << endl;
@@ -165,6 +170,7 @@ int main(){
                 break;
             case 3:
                 cout << "Carga de rutas" << endl;
+                grafo.cargarRutas();
                 break;
             case 4:
                 cout << "Carga de movimientos" << endl;
@@ -204,16 +210,22 @@ int main(){
                     }
                 } while (opcionRecomendar != 4);
                 break;
-            case 6:
+            case 6:{
+                string origen, destino;
                 cout << "Recomendar ruta" << endl;
-                break;
+                cout << "Ingrese la ciudad de origen: ";
+                std::cin >> origen;
+                cout << "Ingrese la ciudad de destino: ";
+                std::cin >> destino;
+                grafo.recomendarRutaCorta(origen, destino);
+                break;}
             case 7:
                 cout << "Visualizar reportes" << endl;
                 aviones->graficar("aviones");
                 pilotos->generarReporte();
-                tabla->imprimirTabla();
                 tabla->generarGraphviz();
                 arbol->graficar("arbol");
+                grafo.generarGrafo("grafo");
                 break;
             case 8:
                 cout << "Saliendo..." << endl;

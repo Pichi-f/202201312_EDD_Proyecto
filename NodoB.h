@@ -14,8 +14,8 @@ public:
     NodoB* siguiente;
 
     NodoB(int m) : clavesUsadas(0), hoja(true) {
-        claves.resize(m - 1);
-        punteros.resize(m);
+        claves.resize(m - 1);  // m - 1 claves
+        punteros.resize(m);    // m punteros
         siguiente = nullptr;
     }
 
@@ -47,7 +47,7 @@ public:
 
     NodoB* dividirNodo(nodoAviones& mediana) {
         int mid = clavesUsadas / 2;
-        NodoB* nuevoNodo = new NodoB(claves.size() + 1);
+        NodoB* nuevoNodo = new NodoB(claves.size() + 1); // crear un nuevo nodo con m entradas
         nuevoNodo->hoja = hoja;
         nuevoNodo->clavesUsadas = clavesUsadas - mid - 1;
 
@@ -68,6 +68,7 @@ public:
     }
 
     void eliminarClave(const std::string& numeroDeRegistro) {
+        // Implementación del método de eliminación si es necesario.
     }
 
     ~NodoB() {
