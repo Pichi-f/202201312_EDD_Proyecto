@@ -1,0 +1,6 @@
+digraph G{
+node [shape=record];
+Y70016 [label = "{Vuelo: X116 | Numero de registro: Y70016 | Estado: Mantenimiento}"];
+Y70016 -> Y70016;
+Y70016 -> Y70016;
+}

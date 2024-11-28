@@ -1,16 +1,70 @@
 [
     {
-        "vuelo": "V700",
-        "numero_de_registro": "N70000",
+        "vuelo": "X100",
+        "numero_de_registro": "Y70000",
         "modelo": "Boeing 737",
         "capacidad": 180,
         "aerolinea": "AirlineX",
-        "ciudad_destino": "Girona",
-        "estado": "Mantenimiento"
+        "ciudad_destino": "Almeria",
+        "estado": "Disponible"
     },
     {
-        "vuelo": "V701",
-        "numero_de_registro": "N70001",
+        "vuelo": "X101",
+        "numero_de_registro": "Y70001",
+        "modelo": "Boeing 737",
+        "capacidad": 180,
+        "aerolinea": "AirlineX",
+        "ciudad_destino": "Barcelona",
+        "estado": "Disponible"
+    },
+    {
+        "vuelo": "X102",
+        "numero_de_registro": "Y70002",
+        "modelo": "Airbus A320",
+        "capacidad": 150,
+        "aerolinea": "AirlineY",
+        "ciudad_destino": "Cuenca",
+        "estado": "Disponible"
+    },
+    {
+        "vuelo": "X103",
+        "numero_de_registro": "Y70003",
+        "modelo": "Boeing 787",
+        "capacidad": 242,
+        "aerolinea": "AirlineZ",
+        "ciudad_destino": "Donostia",
+        "estado": "Disponible"
+    },
+    {
+        "vuelo": "X104",
+        "numero_de_registro": "Y70004",
+        "modelo": "Boeing 777",
+        "capacidad": 396,
+        "aerolinea": "AirlineX",
+        "ciudad_destino": "Girona",
+        "estado": "Disponible"
+    },
+    {
+        "vuelo": "X105",
+        "numero_de_registro": "Y70005",
+        "modelo": "Airbus A380",
+        "capacidad": 853,
+        "aerolinea": "AirlineW",
+        "ciudad_destino": "Huesca",
+        "estado": "Disponible"
+    },
+    {
+        "vuelo": "X106",
+        "numero_de_registro": "Y70006",
+        "modelo": "Airbus A380",
+        "capacidad": 853,
+        "aerolinea": "AirlineW",
+        "ciudad_destino": "Lleida",
+        "estado": "Disponible"
+    },
+    {
+        "vuelo": "X107",
+        "numero_de_registro": "Y70007",
         "modelo": "Boeing 737",
         "capacidad": 180,
         "aerolinea": "AirlineX",
@@ -18,129 +72,84 @@
         "estado": "Disponible"
     },
     {
-        "vuelo": "V702",
-        "numero_de_registro": "N70002",
+        "vuelo": "X108",
+        "numero_de_registro": "Y70008",
         "modelo": "Airbus A320",
         "capacidad": 150,
         "aerolinea": "AirlineY",
-        "ciudad_destino": "Barcelona",
+        "ciudad_destino": "Madrid",
         "estado": "Disponible"
     },
     {
-        "vuelo": "V703",
-        "numero_de_registro": "N70003",
+        "vuelo": "X109",
+        "numero_de_registro": "Y70009",
         "modelo": "Boeing 787",
         "capacidad": 242,
         "aerolinea": "AirlineZ",
-        "ciudad_destino": "Barcelona",
+        "ciudad_destino": "Madrid",
         "estado": "Disponible"
     },
     {
-        "vuelo": "V704",
-        "numero_de_registro": "N70004",
+        "vuelo": "X110",
+        "numero_de_registro": "Y70010",
         "modelo": "Boeing 777",
         "capacidad": 396,
+        "aerolinea": "AirlineX",
+        "ciudad_destino": "Oviedo",
+        "estado": "Disponible"
+    },
+    {
+        "vuelo": "X111",
+        "numero_de_registro": "Y70011",
+        "modelo": "Airbus A380",
+        "capacidad": 853,
+        "aerolinea": "AirlineW",
+        "ciudad_destino": "Pamplona",
+        "estado": "Disponible"
+    },
+    {
+        "vuelo": "X112",
+        "numero_de_registro": "Y70012",
+        "modelo": "Boeing 737",
+        "capacidad": 180,
         "aerolinea": "AirlineX",
         "ciudad_destino": "Sevilla",
         "estado": "Disponible"
     },
     {
-        "vuelo": "V705",
-        "numero_de_registro": "N70005",
-        "modelo": "Airbus A380",
-        "capacidad": 853,
-        "aerolinea": "AirlineW",
-        "ciudad_destino": "Sevilla",
+        "vuelo": "X113",
+        "numero_de_registro": "Y70013",
+        "modelo": "Airbus A320",
+        "capacidad": 150,
+        "aerolinea": "AirlineY",
+        "ciudad_destino": "Toledo",
         "estado": "Disponible"
     },
     {
-        "vuelo": "V706",
-        "numero_de_registro": "N70006",
-        "modelo": "Airbus A380",
-        "capacidad": 853,
-        "aerolinea": "AirlineW",
+        "vuelo": "X114",
+        "numero_de_registro": "Y70014",
+        "modelo": "Boeing 787",
+        "capacidad": 242,
+        "aerolinea": "AirlineZ",
         "ciudad_destino": "Valencia",
         "estado": "Disponible"
     },
     {
-        "vuelo": "V707",
-        "numero_de_registro": "N70007",
-        "modelo": "Boeing 737",
-        "capacidad": 180,
+        "vuelo": "X115",
+        "numero_de_registro": "Y70015",
+        "modelo": "Boeing 777",
+        "capacidad": 396,
         "aerolinea": "AirlineX",
-        "ciudad_destino": "Valencia",
-        "estado": "Disponible"
-    },
-    {
-        "vuelo": "V708",
-        "numero_de_registro": "N70008",
-        "modelo": "Airbus A320",
-        "capacidad": 150,
-        "aerolinea": "AirlineY",
         "ciudad_destino": "Zaragoza",
         "estado": "Disponible"
     },
     {
-        "vuelo": "V709",
-        "numero_de_registro": "N70009",
-        "modelo": "Boeing 787",
-        "capacidad": 242,
-        "aerolinea": "AirlineZ",
+        "vuelo": "X116",
+        "numero_de_registro": "Y70016",
+        "modelo": "Boeing 777",
+        "capacidad": 396,
+        "aerolinea": "AirlineX",
         "ciudad_destino": "Zaragoza",
         "estado": "Disponible"
-    },
-    {
-        "vuelo": "V710",
-        "numero_de_registro": "N70010",
-        "modelo": "Boeing 777",
-        "capacidad": 396,
-        "aerolinea": "AirlineX",
-        "ciudad_destino": "Bilbao",
-        "estado": "Disponible"
-    },
-    {
-        "vuelo": "V711",
-        "numero_de_registro": "N70011",
-        "modelo": "Airbus A380",
-        "capacidad": 853,
-        "aerolinea": "AirlineW",
-        "ciudad_destino": "Bilbao",
-        "estado": "Disponible"
-    },
-    {
-        "vuelo": "V712",
-        "numero_de_registro": "N70012",
-        "modelo": "Boeing 737",
-        "capacidad": 180,
-        "aerolinea": "AirlineX",
-        "ciudad_destino": "Granada",
-        "estado": "Disponible"
-    },
-    {
-        "vuelo": "V713",
-        "numero_de_registro": "N50013",
-        "modelo": "Airbus A320",
-        "capacidad": 150,
-        "aerolinea": "AirlineY",
-        "ciudad_destino": "Granada",
-        "estado": "Disponible"
-    },
-    {
-        "vuelo": "V714",
-        "numero_de_registro": "N70014",
-        "modelo": "Boeing 787",
-        "capacidad": 242,
-        "aerolinea": "AirlineZ",
-        "ciudad_destino": "Córdoba",
-        "estado": "Disponible"
-    },
-    {
-        "vuelo": "V715",
-        "numero_de_registro": "N70015",
-        "modelo": "Boeing 777",
-        "capacidad": 396,
-        "aerolinea": "AirlineX",
-        "ciudad_destino": "Murcia",
-        "estado": "Mantenimiento"
     }
 ]

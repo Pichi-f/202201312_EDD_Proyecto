@@ -1,0 +1,122 @@
+digraph G {
+node [shape=record];
+rankdir=LR;
+subgraph cluster_17 {
+style=filled;
+color=lightgrey;
+nodoClave17 [label="17"];
+}
+subgraph cluster_16 {
+style=filled;
+color=lightgrey;
+nodoClave16 [label="16"];
+}
+subgraph cluster_15 {
+style=filled;
+color=lightgrey;
+nodoClave15 [label="15"];
+}
+subgraph cluster_14 {
+style=filled;
+color=lightgrey;
+nodoClave14 [label="14"];
+}
+subgraph cluster_13 {
+style=filled;
+color=lightgrey;
+nodoClave13 [label="13"];
+}
+subgraph cluster_12 {
+style=filled;
+color=lightgrey;
+nodoClave12 [label="12"];
+nodoDatos12_0 [label="X80000123", shape=record, style=filled, color=white];
+nodoClave12 -> nodoDatos12_0;
+}
+subgraph cluster_11 {
+style=filled;
+color=lightgrey;
+nodoClave11 [label="11"];
+nodoDatos11_0 [label="X70000123", shape=record, style=filled, color=white];
+nodoClave11 -> nodoDatos11_0;
+nodoDatos11_1 [label="X07000123", shape=record, style=filled, color=white];
+nodoDatos11_0 -> nodoDatos11_1;
+}
+subgraph cluster_10 {
+style=filled;
+color=lightgrey;
+nodoClave10 [label="10"];
+nodoDatos10_0 [label="X60000123", shape=record, style=filled, color=white];
+nodoClave10 -> nodoDatos10_0;
+nodoDatos10_1 [label="X06000123", shape=record, style=filled, color=white];
+nodoDatos10_0 -> nodoDatos10_1;
+}
+subgraph cluster_9 {
+style=filled;
+color=lightgrey;
+nodoClave9 [label="9"];
+nodoDatos9_0 [label="X50000123", shape=record, style=filled, color=white];
+nodoClave9 -> nodoDatos9_0;
+nodoDatos9_1 [label="X05000123", shape=record, style=filled, color=white];
+nodoDatos9_0 -> nodoDatos9_1;
+}
+subgraph cluster_8 {
+style=filled;
+color=lightgrey;
+nodoClave8 [label="8"];
+nodoDatos8_0 [label="X40000123", shape=record, style=filled, color=white];
+nodoClave8 -> nodoDatos8_0;
+nodoDatos8_1 [label="X04000123", shape=record, style=filled, color=white];
+nodoDatos8_0 -> nodoDatos8_1;
+}
+subgraph cluster_7 {
+style=filled;
+color=lightgrey;
+nodoClave7 [label="7"];
+nodoDatos7_0 [label="X30000123", shape=record, style=filled, color=white];
+nodoClave7 -> nodoDatos7_0;
+nodoDatos7_1 [label="X03000123", shape=record, style=filled, color=white];
+nodoDatos7_0 -> nodoDatos7_1;
+}
+subgraph cluster_6 {
+style=filled;
+color=lightgrey;
+nodoClave6 [label="6"];
+nodoDatos6_0 [label="X20000123", shape=record, style=filled, color=white];
+nodoClave6 -> nodoDatos6_0;
+nodoDatos6_1 [label="X02000123", shape=record, style=filled, color=white];
+nodoDatos6_0 -> nodoDatos6_1;
+}
+subgraph cluster_5 {
+style=filled;
+color=lightgrey;
+nodoClave5 [label="5"];
+nodoDatos5_0 [label="X01000123", shape=record, style=filled, color=white];
+nodoClave5 -> nodoDatos5_0;
+}
+subgraph cluster_4 {
+style=filled;
+color=lightgrey;
+nodoClave4 [label="4"];
+}
+subgraph cluster_3 {
+style=filled;
+color=lightgrey;
+nodoClave3 [label="3"];
+}
+subgraph cluster_2 {
+style=filled;
+color=lightgrey;
+nodoClave2 [label="2"];
+}
+subgraph cluster_1 {
+style=filled;
+color=lightgrey;
+nodoClave1 [label="1"];
+}
+subgraph cluster_0 {
+style=filled;
+color=lightgrey;
+nodoClave0 [label="0"];
+}
+}
